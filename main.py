@@ -5,7 +5,13 @@ import openai
 import email
 
 from local_settings import OAI_API_KEY
-from utils import get_mail, get_unseen_emails, make_email_text, parse_response_to_label
+from utils import (
+    get_mail, 
+    get_unseen_emails, 
+    make_email_text, 
+    parse_response_to_label
+)
+
 from constants import (
     N_TRUNC,
     N_EMAILS_PER_SUMMARY,
@@ -248,8 +254,6 @@ The current user's preference prompt for ACTION REQUIRED emails:
 def phase_1(mail, msgnums, token_usage, n_samples=100):
     random_msg_idxs = random.sample(msgnums, n_samples)
 
-    print(f'\n\n####### Phase 1 LLM parsing after {time.time() - start_time:.2f} seconds\n\n')
-
     ### Phase 1
     ### Successful examples necessary to pass phase 1
     seen_examples = []
@@ -333,6 +337,7 @@ def phase_1(mail, msgnums, token_usage, n_samples=100):
 
 
 def phase_2(mail, msgnums, token_usage, seen_prompt, action_prompt):
+    print(f'\n\n####### Phase 2 LLM parsing after {time.time() - start_time:.2f} seconds \n\n')
     action_required_emails = []
     seen_emails = []
     unsure_emails = []
@@ -377,17 +382,20 @@ if __name__ == "__main__":
     print(len(msgnums))
     print(f'Counting after {time.time() - start_time:.2f} seconds')
 
-    ### Phase 1
+    ### Aggregate emails by traditional metrics to build a baseline
+    ### I skipped this bc I'm lazy but could be good to do frfr
+    # count_agg_unseen_emails(mail, msgnums)
+
+
+    ### Phase 1 - Refine preference prompts for seen and action labels
+    print(f'\n\n####### Starting phase 1 LLM parsing after {time.time() - start_time:.2f} seconds\n\n')
     seen_prompt, action_prompt, token_usage = phase_1(
         mail=mail, 
         msgnums=msgnums, 
         token_usage=token_usage
     )
 
-    # count_agg_unseen_emails(mail, msgnums)
-
-    print(f'\n\n####### Phase 2 LLM parsing after {time.time() - start_time:.2f} seconds \n\n')
-
+    print(f'\n\n####### Starting phase 2 LLM parsing after {time.time() - start_time:.2f} seconds \n\n')
     action_required_emails, seen_emails, unsure_emails, token_usage = phase_2(
         mail=mail, 
         msgnums=msgnums, 

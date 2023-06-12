@@ -1,6 +1,6 @@
 ## Overview
 
-This script is meant to help people clean out their inboxes. 
+This script is meant to help people clean out their gmail inboxes. 
 
 The LLM will go through your inbox deciding whether emails require action or whether they can be safely marked as seen.
 
@@ -38,8 +38,8 @@ You shouldn't have to pay attention during this step but I would watch the conso
 Clone the repo, setup a venv, create your own local_settings.py file then run the code.
 
 ```
-git clone ...
-cd ...
+git clone https://github.com/mrtoronto/ai_email_reader.git
+cd ai_email_reader
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 python main.py
@@ -62,12 +62,15 @@ TL;DR: this is not a very effective method for cleaning your inbox.
 It is slightly more effective than marking everything as read but its a lot more work, has a non-zero cost and isn't perfect. 
 
 ## Future directions
+- Add support for other mailboxes
 - Improve the summary generation by:
     - improving the prompt
     - Use adversarial examples more effectively
         - Example: Model thought email 1 was a MARK AS SEEN email but its actually action required. This example is more valuable than an example the model already knew the answer to. 
     - Do a better job filtering similar examples
         - Levenshtein distance is good but not perfect
+- Come up with a more complex method of letting AI generate rules
+    - Instead of describing the rules, AI could output traditional filter logic where relevant
 - Incorporate email body's
     - Not usually necessary but maybe helpful
     - Does make it much harder to fit many examples in a single prompt for summary generation
