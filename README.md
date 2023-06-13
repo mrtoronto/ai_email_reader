@@ -51,7 +51,7 @@ You can't log into a gmail account from a third-party app using your normal pass
 
 The result will be a 12 character string you can use in place of your password. 
 
-https://support.google.com/accounts/answer/185833?hl=en&sjid=17233954404880666546-NA
+https://support.google.com/accounts/answer/185833
 
 
 
